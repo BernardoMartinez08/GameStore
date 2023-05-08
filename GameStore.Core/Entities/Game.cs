@@ -1,6 +1,4 @@
-﻿using GameStore.Api.DataTransferObjects.GamesDataTransferObjects;
-
-namespace GameStore.Core.Entities
+﻿namespace GameStore.Core.Entities
 {
     public class Game
     {

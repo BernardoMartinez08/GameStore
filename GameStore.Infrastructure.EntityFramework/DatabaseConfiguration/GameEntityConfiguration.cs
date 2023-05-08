@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using GameStore.Core.Entities;
+using System.Reflection.Emit;
 
 namespace GameStore.Infrastructure.EntityFramework.DatabaseConfiguration
 {
@@ -34,6 +35,11 @@ namespace GameStore.Infrastructure.EntityFramework.DatabaseConfiguration
             modelbuilder
                 .Property(x => x.GameMode)
                 .IsRequired();
+
+            modelbuilder
+                .HasOne(x => x.Category)
+                .WithMany(x => x.Games)
+                .HasForeignKey(x => x.CategoryId);
         }
     }
 }

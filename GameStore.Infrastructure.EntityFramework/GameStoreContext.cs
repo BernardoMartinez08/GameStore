@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using GameStore.Infrastructure.EntityFramework.DatabaseConfiguration;
 
-namespace SocialNetwork.Infrastructure.EntityFramework
+namespace GameStore.Infrastructure.EntityFramework
 {
     public class GameStoreContext : DbContext
     {
@@ -16,13 +16,8 @@ namespace SocialNetwork.Infrastructure.EntityFramework
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //Configuracion del Usuario.
             modelBuilder.ApplyConfiguration<Category>(new CategoryEntityConfiguration());
-
-            //Configuracion de Post
             modelBuilder.ApplyConfiguration<Game>(new GameEntityConfiguration());
-
-            //Configuracion de Comentario
         }
     }
 }

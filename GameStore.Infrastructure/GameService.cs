@@ -2,13 +2,9 @@
 using GameStore.Core;
 using Error = GameStore.Core.Error;
 using GameStore.Core.Entities;
-using GameStore.Api.DataTransferObjects.GamesDataTransferObjects;
 using GameMode = GameStore.Core.Entities.GameMode;
-using Microsoft.OpenApi.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
-namespace SocialNetwork.Infrastructure;
+namespace GameStore.Infrastructure;
 public class GameService : IGameService
 {
     private readonly IRepository<Game> gameRepository;
@@ -20,7 +16,7 @@ public class GameService : IGameService
         this.categoryRepository = categoryRepository;        
     }
 
-    public OperationResult<Game> Create(GameCreateDto game)
+    public OperationResult<Game> Create(Game game)
     {
         if (string.IsNullOrEmpty(game.Name))
         {
@@ -49,51 +45,31 @@ public class GameService : IGameService
             });
         }
 
-        var newGame = new Game
-        {
-            Name = game.Name,
-            PublishDate = game.PublishDate,
-            Developer = game.Developer,
-            GameMode = (GameMode)game.GameMode,
-            AvailableCopies = game.AvailableCopies,
-
-        };
-
-        gameRepository.Add(newGame);
-        return new OperationResult<Game>(newGame);
+        gameRepository.Add(game);
+        return new OperationResult<Game>(game);
     }
 
-    public OperationResult<GameDetailsDto> GetById(int id)
+    public OperationResult<Game> GetById(int id)
     {
         var game = this.gameRepository.GetById(id);
         if (game is null)
         {
-            return new OperationResult<GameDetailsDto>(new Error
+            return new OperationResult<Game>(new Error
             {
                 Code = ErrorCode.BadRequest,
                 Message = $"No se encontró un juego con el id {id}"
             });
         }
 
-        var gameDetails = new GameDetailsDto
-        {
-            Id = game.Id,
-            Name = game.Name,
-            PublishDate = game.PublishDate,
-            Developer = game.Developer,
-            AvailableCopies = game.AvailableCopies,
-            GameMode = (GameStore.Api.DataTransferObjects.GamesDataTransferObjects.GameMode)game.GameMode,
-        };
-
-        return gameDetails;
+        return game;
     }
 
-    public OperationResult<IReadOnlyList<GameDetailsDto>> GetByCategory(int categoryId)
+    public OperationResult<IReadOnlyList<Game>> GetByCategory(int categoryId)
     {
         var category = this.categoryRepository.GetById(categoryId);
         if (category is null)
         {
-            return new OperationResult<IReadOnlyList<GameDetailsDto>>(new Error
+            return new OperationResult<IReadOnlyList<Game>>(new Error
             {
                 Code = ErrorCode.BadRequest,
                 Message = $"No se encontró un post con id {categoryId}"
@@ -103,51 +79,29 @@ public class GameService : IGameService
         var games = this.gameRepository.Filter(x => x.CategoryId == categoryId);
         if (games is null)
         {
-            return new OperationResult<IReadOnlyList<GameDetailsDto>>(new Error
+            return new OperationResult<IReadOnlyList<Game>>(new Error
             {
                 Code = ErrorCode.NotFound,
                 Message = $"No se encontró ningun juego con el id de categoria {categoryId}"
             });
         }
 
-        IReadOnlyList<GameDetailsDto> gameDetails = games.Select(game => new GameDetailsDto
-        {
-            Id = game.Id,
-            Name = game.Name,
-            PublishDate = game.PublishDate,
-            Developer = game.Developer,
-            AvailableCopies = game.AvailableCopies,
-            GameMode = (GameStore.Api.DataTransferObjects.GamesDataTransferObjects.GameMode)game.GameMode,
-        }).ToList();
-
-
-        return new OperationResult<IReadOnlyList<GameDetailsDto>>(gameDetails);
+        return new OperationResult<IReadOnlyList<Game>>(games);
     }
 
-    public OperationResult<IReadOnlyList<GameDetailsDto>> GetByGameMode(GameMode gamemode)
+    public OperationResult<IReadOnlyList<Game>> GetByGameMode(GameMode gamemode)
     {
         var games = this.gameRepository.Filter(x => x.GameMode == gamemode);
         if (games is null)
         {
-            return new OperationResult<IReadOnlyList<GameDetailsDto>>(new Error
+            return new OperationResult<IReadOnlyList<Game>>(new Error
             {
                 Code = ErrorCode.NotFound,
-                Message = $"No se encontró ningun juego que tenga modo de juego {gamemode.GetDisplayName()}"
+                Message = $"No se encontró ningun juego que tenga modo de juego {gamemode}"
             });
         }
 
-        IReadOnlyList<GameDetailsDto> gameDetails = games.Select(game => new GameDetailsDto
-        {
-            Id= game.Id,
-            Name = game.Name,
-            PublishDate = game.PublishDate,
-            Developer = game.Developer,
-            AvailableCopies = game.AvailableCopies,
-            GameMode = (GameStore.Api.DataTransferObjects.GamesDataTransferObjects.GameMode)game.GameMode,
-        }).ToList();
-
-
-        return new OperationResult<IReadOnlyList<GameDetailsDto>>(gameDetails);
+        return new OperationResult<IReadOnlyList<Game>>(games);
     }
 
     public OperationResult<Game> RentGame(int id)
@@ -197,7 +151,7 @@ public class GameService : IGameService
         return new OperationResult<Game>(newGame);
     }
 
-    OperationResult<IReadOnlyList<GameDetailsDto>> IGameService.GetRentedGames()
+    OperationResult<IReadOnlyList<Game>> IGameService.GetRentedGames()
     {
         throw new NotImplementedException();
     }

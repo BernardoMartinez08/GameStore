@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GameStore.Api\GameStore.Api.csproj" />
     <ProjectReference Include="..\GameStore.Core\GameStore.Core.csproj" />
   </ItemGroup>
 

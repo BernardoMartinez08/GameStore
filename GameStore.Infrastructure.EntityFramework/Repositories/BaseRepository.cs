@@ -1,7 +1,6 @@
 ﻿using GameStore.Core.Interfaces;
-using SocialNetwork.Core.Interfaces;
 
-namespace SocialNetwork.Infrastructure.EntityFramework.Repositories
+namespace GameStore.Infrastructure.EntityFramework.Repositories
 {
     public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {

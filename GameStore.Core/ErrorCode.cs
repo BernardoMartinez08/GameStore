@@ -1,5 +1,4 @@
-﻿using System;
-namespace GameStore.Core
+﻿namespace GameStore.Core
 {
     public enum ErrorCode
     {

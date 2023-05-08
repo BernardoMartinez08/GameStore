@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GameStore.Core
+﻿namespace GameStore.Core
 {
     public class OperationResult<TResult> : OperationResult
     {

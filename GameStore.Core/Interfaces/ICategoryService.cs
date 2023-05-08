@@ -1,16 +1,11 @@
 ﻿using GameStore.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameStore.Core.Interfaces
 {
-    internal interface ICategoryService
+    public interface ICategoryService
     {
-        OperationResult<Game> Create(Game game);
+        OperationResult<Category> Create(Category category);
 
-        OperationResult<Game> GetById(int id);
+        OperationResult<Category> GetById(int id);
     }
 }
