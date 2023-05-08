@@ -59,7 +59,7 @@ namespace GameStore.Api.Controllers
             var result = this.gameService.Create(newGame);
             if (result.Succeeded)
             {
-                return new CreatedAtActionResult(nameof(GetGameById), "GameDetailsDto", new { gameId = result.Result.Id }, game);
+                return new CreatedAtActionResult(nameof(GetGameById), "Game", new { gameId = result.Result.Id }, game);
             }
             return GetErrorResult<GameDetailsDto>(gameDetails);
         }

@@ -32,14 +32,15 @@ namespace GameStore.Api.Controllers
             };
 
             var result = this.categoryService.Create(newCategory);
-            if (result.Succeeded)
-            {
-                return new CreatedAtActionResult(nameof(GetCategoryById), "Category", new { categoryId = result.Result.Id }, category);
-            }
             var categoryDetails = new CategoryDetailsDto
             {
                 Name = category.Name,
             };
+
+            if (result.Succeeded)
+            {
+                return new CreatedAtActionResult(nameof(GetCategoryById), "Category", new { categoryId = result.Result.Id }, category);
+            }
 
             return GetErrorResult<CategoryDetailsDto>(categoryDetails);
         }
